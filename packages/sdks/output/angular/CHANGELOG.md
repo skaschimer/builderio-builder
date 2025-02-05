@@ -1,5 +1,43 @@
 # @builder.io/sdk-angular
 
+## 0.17.7
+
+### Patch Changes
+
+- abe5cba: Feat: exports `setClientUserAttributes` helper that can be used to set and update Builder's user attributes cookie. This cookie is used by Builder's Personalization Containers to decide which variant to render.
+
+  Usage example:
+
+  ```ts
+  import { setClientUserAttributes } from "@builder.io/sdk-angular";
+
+  setClientUserAttributes({
+    device: "tablet",
+  });
+  ```
+
+## 0.17.6
+
+### Patch Changes
+
+- 91a7117: Fix: vertically aligning child block of columns block
+- 2f73837: Fix: Removed z-index from Video block, which caused it to hide its children elements.
+
+## 0.17.5
+
+### Patch Changes
+
+- 648c37f: Fix: support Builder's block animations.
+- 3eb5b99: Fix: add `display: contents` to InlinedScript and InlinedStyles components so that they don't affect flex styles
+- eb3d1af: Fix: Form block rendering children multiple times
+
+## 0.17.4
+
+### Patch Changes
+
+- 84b6986: Fix: `@Input` not annotated errors in console
+- e07fcf0: Fix: hydration errors in angular ssr v17+ apps by skipping hydration from Content level for now as Angular doesn't support hydrating elements created dynamically
+
 ## 0.17.3
 
 ### Patch Changes

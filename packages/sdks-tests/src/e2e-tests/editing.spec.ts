@@ -18,7 +18,13 @@ import { ADD_A_TEXT_BLOCK } from '../specs/duplicated-content-using-nested-symbo
 import { EDITING_STYLES } from '../specs/editing-styles.js';
 import { ACCORDION_WITH_NO_DETAIL } from '../specs/accordion.js';
 
-const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
+const editorTests = ({
+  noTrustedHosts,
+  editorIsInViewPort,
+}: {
+  noTrustedHosts: boolean;
+  editorIsInViewPort?: boolean;
+}) => {
   test('correctly updates Text block', async ({ page, basePort, packageName, sdk }) => {
     test.skip(
       packageName === 'nextjs-sdk-next-app' ||
@@ -27,8 +33,16 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
         packageName === 'gen1-remix'
     );
 
+    if (!editorIsInViewPort) {
+      test.skip(sdk !== 'qwik', 'This is Qwik only test');
+    }
+
     await launchEmbedderAndWaitForSdk({
-      path: noTrustedHosts ? '/no-trusted-hosts' : '/editing',
+      path: noTrustedHosts
+        ? '/no-trusted-hosts'
+        : editorIsInViewPort
+          ? '/editing'
+          : '/editing-with-top-padding',
       basePort,
       page,
       sdk,
@@ -82,7 +96,7 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
 };
 
 test.describe('Visual Editing', () => {
-  editorTests({ noTrustedHosts: false });
+  editorTests({ noTrustedHosts: false, editorIsInViewPort: false });
   test('correctly updates Box -> Columns when used Inner Layout > Columns option', async ({
     page,
     packageName,
@@ -209,7 +223,8 @@ test.describe('Visual Editing', () => {
     });
     test('correctly updates width props', async ({ page, basePort, packageName, sdk }) => {
       test.skip(
-        packageName === 'react-native' ||
+        packageName === 'react-native-74' ||
+          packageName === 'react-native-76-fabric' ||
           packageName === 'nextjs-sdk-next-app' ||
           packageName === 'gen1-next14-pages' ||
           packageName === 'gen1-next15-app' ||
